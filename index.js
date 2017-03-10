@@ -1,3 +1,4 @@
+
 var express = require('express');
 var server = express();
 var mongoose = require('mongoose');
@@ -14,7 +15,24 @@ var foodSchema = mongoose.Schema({
   calories: Number
 });
 
-var Food =mongoose.model('Food', foodSchema);
+
+var Food = mongoose.model('Food', foodSchema);
+
+// testing database //keep commented out as to not duplicate more chocolate
+// var cupCake = new Food({
+//   price: 2,
+//   category: 'dessert',
+//   isGlutenFree: true,
+//   calories: 350,
+//   name: 'Chocolicious'
+// });
+// cupCake.save(function(err, data){
+//   if(err){
+//     console.log(err);
+//   } else{
+//     console.log(data);
+//   }
+// });
 
 server.get('/foods', function(req, res){
   Food.find({}, function(err, documents){
@@ -29,7 +47,8 @@ server.get('/foods', function(req, res){
     }
     });
   });
-//get/animals
+
+
   server.get('/foods/:id', function(req, res){
     Food.find({_id: req.params.id}, function(err, documents){
       if(err){
@@ -38,40 +57,27 @@ server.get('/foods', function(req, res){
         });
       } else {
         res.status(200).json({
-          foods: documents
+          food: documents
         });
       }
     });
   });
-  //POST /animals
-  server.post('/foods', function(req, res){
-    Food.find({}, function(err, documents){
+
+  server.get('/foods/category/:categoryName', function(req, res){
+    Food.find({category: req.params.categoryName}, function(err, documents){
       if(err){
         res.status(500).json({
           msg: err
         });
       } else {
         res.status(200).json({
-          foods: documents
+          food: documents
         });
       }
       });
     });
-  //PUT /animals/:id
-  server.put('/foods/:id', function(req, res){
-    Food.find({_id: req.params.id}, function(err, documents){
-      if(err){
-        res.status(500).json({
-          msg: err
-        });
-      } else {
-        res.status(200).json({
-          animals: documents
-        });
-      }
-    });
-  });
-  //DELETE /animals/:id
+
+
   server.listen(port, function(){
     console.log('Now listening on port...', port);
   });
