@@ -12,19 +12,20 @@ var foodSchema = mongoose.Schema({
   price: Number,
   category: String,
   isGlutenFree: Boolean,
-  calories: Number
+  calories: Number,
+  name: String
 });
 
 
 var Food = mongoose.model('Food', foodSchema);
 
-// testing database //keep commented out as to not duplicate more chocolate
+//keep commented out as to not duplicate more chocolate
 // var cupCake = new Food({
 //   price: 2,
 //   category: 'dessert',
 //   isGlutenFree: true,
 //   calories: 350,
-//   name: 'Chocolicious'
+//   name: 'cupcake-a-licious'
 // });
 // cupCake.save(function(err, data){
 //   if(err){
@@ -63,8 +64,8 @@ server.get('/foods', function(req, res){
     });
   });
 
-  server.get('/foods/category/:categoryName', function(req, res){
-    Food.find({category: req.params.categoryName}, function(err, documents){
+  server.get('/foods/category/:foodCategory', function(req, res){
+    Food.find({category: req.params.foodCategory}, function(err, documents){
       if(err){
         res.status(500).json({
           msg: err
@@ -76,6 +77,7 @@ server.get('/foods', function(req, res){
       }
       });
     });
+
 
 
   server.listen(port, function(){
