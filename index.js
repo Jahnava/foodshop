@@ -108,6 +108,22 @@ server.get('/foods', function(req, res){
     });
   });
 
+  //POST/foods
+  server.post('/foods', function(req, res){
+    var food = new Food(req.body);
+    food.save(function(err, document){
+      if(err){
+        res.status(500).json({
+          msg: err
+        });
+      } else {
+        res.status(200).json({
+          msg: 'Success'
+        });
+      }
+    });
+    });
+
 
 
 
