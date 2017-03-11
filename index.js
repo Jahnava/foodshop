@@ -94,7 +94,19 @@ server.get('/foods', function(req, res){
   });
 
   //PUT/foods/:id
-  server.put('/foods/:id', function)
+  server.put('/foods/:id', function(req, res){
+    Food.findOneAndUpdate({__id: req.params.id}, req.body, function(err, document){
+      if(err){
+        res.status(500).json({
+          msg: err
+        });
+      }else{
+        res.status(200).json({
+          msg:'Successfully updated'
+        });
+      }
+    });
+  });
 
 
 
