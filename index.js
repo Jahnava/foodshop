@@ -78,6 +78,28 @@ server.get('/foods', function(req, res){
       });
     });
 
+  //DELETE/foods/:id
+  server.delete('/foods/:id',function(req, res){
+    Food.remove({_id: req.params.id},function(err, document){
+      if(err){
+        res.status(500).json({
+          msg:err
+        });
+      } else {
+        res.status(200).json({
+          msg: 'Successfully deleted'
+        });
+      }
+    });
+  });
+
+  //PUT/foods/:id
+  server.put('/foods/:id', function)
+
+
+
+
+
 
 
   server.listen(port, function(){
