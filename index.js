@@ -9,7 +9,7 @@ var mongoURI = process.env.MONGOURI || require('./secrets').mongoURI;
 mongoose.connect(mongoURI);
 
 var foodSchema = mongoose.Schema({
-  price: Number,
+  price: String,
   category: String,
   isGlutenFree: Boolean,
   calories: Number,
@@ -19,9 +19,9 @@ var foodSchema = mongoose.Schema({
 
 var Food = mongoose.model('Food', foodSchema);
 
-//keep commented out as to not duplicate more chocolate
+// // keep commented out as to not duplicate more cupcakes
 // var cupCake = new Food({
-//   price: 2,
+//   price: '$2.00',
 //   category: 'dessert',
 //   isGlutenFree: true,
 //   calories: 350,
@@ -51,8 +51,8 @@ server.get('/foods', function(req, res){
 
 
   server.get('/foods/:id', function(req, res){
-    Food.find({_id: req.params.id}, function(err, documents){
-      if(err){
+    Food.find({_id: req.params.id}, function(err, documents){ //req.params doesnt work on postman unless I install body parser into project
+      if(err){                                                 // install by writing 'npm install body parser --save'
         res.status(500).json({
           msg: err
         });
@@ -124,10 +124,35 @@ server.get('/foods', function(req, res){
     });
     });
 
+ //GET/foods/price/:dollarAmount
+ server.get('/foods/price/:dollarAmount', function(req, res){
+   Food.find({category: req.params.dollarAmount}, function(err, documents){
+     if(err){
+       res.status(500).json({
+         msg: err
+       });
+     } else {
+       res.status(200).json({
+         food: documents
+       });
+     }
+     });
+   });
 
-
-
-
+ //DELETE/foods/category/:category
+ server.delete('/foods/category/:category', function(req, res){
+   Food.remove({category: req.params.category}, function(err, documents){
+     if(err){
+       res.status(500).json({
+         msg: err
+       });
+     } else {
+       res.status(200).json({
+         msg: 'Successfully deleted'
+       });
+     }
+     });
+   });
 
 
   server.listen(port, function(){
